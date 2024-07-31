@@ -1,0 +1,310 @@
+
+{% extends "nah_template/base.html" %}
+{% load static %}
+{% block content %}
+
+
+{% include 'nah_template/navbar.html' %}
+
+<style>
+#calendar{
+    width:100%;
+    height:70vh;
+    background-color: white;
+    padding:1.5rem;
+    border-radius: 1rem;
+    color:black;
+    margin-top:1.5rem;
+ 
+}
+.main-container{
+    background-color: #a4c9a6;
+    height:100vh;
+    width:100%;
+}
+
+.container{
+    max-width: 100%;
+    height:90%;
+}
+.title{
+    font-family: "Raleway", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 687;
+    font-style: normal;
+    margin-top:4rem;
+}
+.title h2{
+    color:white;
+    text-align: center;
+    
+}
+
+.navs{
+    margin-top: 4rem;
+    display: flex;
+    gap:1rem;
+    align-items: center;
+    justify-content: center;
+}
+.navs ul{
+    list-style-type: none;
+   
+}
+.navs ul a{
+    text-decoration: none;
+    font-size: 1.2rem;
+    color:white;
+   
+}
+.navs ul li {
+    background-color: #5EA061;
+    padding: .5rem 2rem;
+    margin-bottom: .5rem;
+    border-radius: 1rem;
+    display: flex; /* Make the li element a flex container */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    line-height: 1.8;
+}
+
+.fc-event-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.navs ul li:hover{
+    background-color: white;
+    color:#5EA061 !important;
+}
+.navs ul li a:hover{
+    color:#5EA061;
+}
+
+
+
+</style>
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,687;1,687&display=swap" rel="stylesheet">
+    <!-- google icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <!-- fullcalendar -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.14/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.14/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.14/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.14/index.global.min.js"></script>
+
+
+
+
+
+
+<div class="main-container">
+
+
+    <div class="container">
+
+        <div class="row"> 
+            <div class="col-2 title">
+                <h2>Monthly<br> Overview</h2>
+
+                <div class="navs">
+                    <ul>
+                        <li><a href="{% url 'pspmi_main_page' %}" style="font-size:clamp(.1rem,1rem,1.5rem);text-align: center;"><span class="material-symbols-outlined" style="position: relative;top:.3rem;right:.5rem;">library_books</span>Book Event</a></li>
+                        <li><a href="{% url 'pspmi_view_page' %}" style="font-size:clamp(.1rem,1rem,1.5rem);text-align: center;"><span class="material-symbols-outlined" style="position: relative;top:.3rem;right:.5rem;">book</span>Monthly </a></li>
+                        <li><a href="{% url 'pspmi_monthly_page' %}" style="font-size:clamp(.1rem,1rem,1.5rem);text-align: center;"><span class="material-symbols-outlined" style="position: relative;top:.3rem;right:.5rem;">note_stack</span>Weekly </a></li>
+                        <li><a href="{% url 'pspmi_yearly_page' %}" style="font-size:clamp(.1rem,1rem,1.5rem);text-align: center;"><span class="material-symbols-outlined" style="position: relative;top:.3rem;right:.5rem;">view_timeline</span>Yearly </a></li>
+                       
+                        <li><a href="{% url 'booking_reports' %}" style="font-size:clamp(.1rem,1rem,1.5rem);text-align: center;"><span class="material-symbols-outlined" style="position: relative;top:.3rem;right:.5rem;">view_timeline</span>Reports</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="col-10 mt-5">
+                <form id="filterForm">
+                    <div class="row px-2">
+                        <div class="col-md-3">
+                            <div class="d-flex justify-content-start">
+                                <!-- <input type="text" class="form-control" id="text" name="text" style="margin-right:1rem;"> -->
+                                <select id="categoryFilter" class="form-control" style="margin-right:1rem;">
+                                    <option value="">All Categories</option>
+                                    <option value="function_hall">Function Hall</option>
+                                    <option value="pavilion">Pavilion</option>
+                                    <option value="hostel">Hostel</option>
+                                    <option value="basketball_court">Basketball Court</option>
+                                    <option value="cabana">Cabana</option>
+                                    <option value="camp_site">Camp Site</option>
+                                    <option value="big_pool">Big Pool</option>
+                                    <option value="kidney_pool">Kidney Pool</option>
+                                </select>
+                                <button type="submit" class="ml-5 btn btn-primary" style="padding:0 1.5rem;font-weight:bold;">Filter</button>
+
+                                <button type="submit" class="ml-5 btn btn-success" style="padding:0 1.5rem;font-weight:bold;margin-left:1rem;">Print</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+
+
+                <div id="calendar"></div>
+            </div>
+           
+        </div>
+
+
+
+
+     
+      
+    </div>
+
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var allEvents = []; // Store all events here
+    
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            navLinks: true,
+            initialView: 'dayGridMonth', 
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+
+ 
+            events: function(fetchInfo, successCallback, failureCallback) {
+                $.ajax({
+                    url: '{% url "get_events" %}',
+                    dataType: 'json',
+                    success: function(data) {
+                        allEvents = data.map(function(event) {
+                            var endDate = new Date(event.date_end);
+                            endDate.setDate(endDate.getDate() + 1);
+    
+                            var startDateTime = `${event.date_start}T${event.start_time}`;
+                            var endDateTime = `${event.date_end}T${event.end_time}`;
+                            var eventTitle = `${event.name} - ${event.category} - ${event.start_time} to ${event.end_time}`;
+                            
+                            return {
+                                id: event.id,
+                                title: eventTitle,
+                                start: startDateTime,
+                                end: endDateTime,
+                                extendedProps: {
+                                    category: event.category
+                                }
+                            };
+                        });
+                        successCallback(allEvents);
+                    },
+                    error: function() {
+                        failureCallback();
+                    }
+                });
+            },
+
+
+             eventContent: function(arg) {
+                    var titleEl = document.createElement('div');
+                    titleEl.classList.add('fc-event-title');
+                    titleEl.innerHTML = `<b>${arg.event.title}</b>`;
+                    var arrayOfDomNodes = [titleEl];
+                    return { domNodes: arrayOfDomNodes };
+                },
+
+
+  
+
+            dayMaxEventRows: 5, // Limit to 6 events
+                views: {
+                    dayGridMonth: {
+                        dayMaxEventRows: 5 // Adjust this number based on your preference
+                    }
+                },
+                eventDidMount: function(info) {
+                    if (info.el.querySelector('.fc-more-popover')) {
+                        // Custom styles for the "more" link popover
+                        info.el.querySelector('.fc-more-popover').style.zIndex = '9999';
+                    }
+                
+            },
+
+            
+        
+
+            eventDidMount: function(info) {
+                var category = info.event.extendedProps.category;
+                var backgroundColor = '';
+                switch (category) {
+                    case 'function_hall':
+                        backgroundColor = '#DC16AB';
+                        break;
+                    case 'pavilion':
+                        backgroundColor = 'blue';
+                        break;
+                    case 'hostel':
+                        backgroundColor = 'red';
+                        break;
+                    case 'basketball_court':
+                        backgroundColor = '#6E6563';
+                        break;
+                    case 'cabana':
+                        backgroundColor = '#208D2D';
+                        break;
+                    case 'camp_site':
+                        backgroundColor = '#572708';
+                        break;
+                    case 'big_pool':
+                        backgroundColor = '#406F70';
+                        break;
+                    case 'kidney_pool':
+                        backgroundColor = '#AC4806';
+                        break;
+                    default:
+                        backgroundColor = 'gray';
+                }
+    
+                info.el.style.backgroundColor = backgroundColor;
+                info.el.style.color = 'white';
+            }
+        });
+    
+
+        calendar.render();
+    
+        document.getElementById('filterForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var selectedCategory = document.getElementById('categoryFilter').value;
+            var filteredEvents = allEvents.filter(function(event) {
+                return selectedCategory === "" || event.extendedProps.category === selectedCategory;
+            });
+            calendar.removeAllEvents();
+            calendar.addEventSource(filteredEvents);
+        });
+    });
+    </script>
+
+
+
+
+
+
+
+
+<!-- weekly -->
+
+
+
+  
+    </script>
+
+{% endblock content %}

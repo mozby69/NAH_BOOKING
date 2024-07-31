@@ -1,0 +1,350 @@
+
+{% extends "nah_template/base.html" %}
+{% load static %}
+{% block content %}
+
+
+{% include 'nah_template/navbar.html' %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,687;1,687&display=swap" rel="stylesheet">
+<!-- google icons -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+   <!-- google charts -->
+   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<style>
+
+    
+    .main-container{
+     
+        background-color: #a4c9a6;
+        height:100vh;
+        width:100%;
+      
+    }
+    .container{
+        max-width: 100%;
+    
+        height:90%;
+    }
+    .title{
+        font-family: "Raleway", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 687;
+        font-style: normal;
+        margin-top:4rem;
+    }
+    .title h2{
+        color:white;
+        text-align: center;
+        
+    
+    }
+    .navs{
+        margin-top: 4rem;
+        display: flex;
+        gap:1rem;
+        align-items: center;
+        justify-content: center;
+    }
+    .navs ul{
+        list-style-type: none;
+       
+    }
+    .navs ul a{
+        text-decoration: none;
+        font-size: 1.2rem;
+        color:white;
+       
+    }
+    .navs ul li {
+        background-color: #5EA061;
+        padding: .5rem 2rem;
+        margin-bottom: .5rem;
+        border-radius: 1rem;
+        display: flex; /* Make the li element a flex container */
+        align-items: center; /* Center vertically */
+        justify-content: center; /* Center horizontally */
+        line-height: 1.8;
+    }
+    
+    .fc-list-day-frame {
+        pointer-events: none;
+        cursor: default;
+    }
+    .fc-list-event:hover {
+        background-color: inherit !important;
+        color: inherit !important;
+    }
+    
+    .fc-event-title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .navs ul li:hover{
+        background-color: white;
+        color:#5EA061 !important;
+    }
+    .navs ul li a:hover{
+        color:#5EA061;
+    }
+    .boxes .box{
+        padding:.5rem;
+        border-radius: .5rem;
+    }
+
+    #currentday_button {
+        font-size: clamp(.2rem, .8rem, 3rem);
+        border: 1px solid #5ea061;
+        background-color: #5ea061;
+        color: white;
+        padding: .6rem 1rem;
+        font-weight: bold;
+        border-radius: 1rem;
+        }
+
+    #currentday_button:hover {
+    background-color: white; /* Hover effect */
+    color:#5EA061;
+    cursor:grab;
+    }
+   
+    </style>
+
+
+
+
+    <div class="main-container">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-2 title">
+                    <h2>Yearly<br> Overview</h2>
+                    <div class="navs">
+                        <ul>
+                            <li><a href="{% url 'pspmi_main_page' %}" class="d-block text-center" style="font-size:clamp(.1rem,1rem,1.5rem);"><span class="material-symbols-outlined" style="position: relative;top:.3rem;right:.5rem;">library_books</span>Book Event</a></li>
+                            <li><a href="{% url 'pspmi_view_page' %}" class="d-block text-center" style="font-size:clamp(.1rem,1rem,1.5rem);"><span class="material-symbols-outlined" style="position: relative;top:.3rem;right:.5rem;">book</span>Monthly</a></li>
+                            <li><a href="{% url 'pspmi_monthly_page' %}" class="d-block text-center" style="font-size:clamp(.1rem,1rem,1.5rem);"><span class="material-symbols-outlined" style="position: relative;top:.3rem;right:.5rem;">note_stack</span>Weekly</a></li>
+                            <li><a href="{% url 'pspmi_yearly_page' %}" class="d-block text-center" style="font-size:clamp(.1rem,1rem,1.5rem);"><span class="material-symbols-outlined" style="position: relative;top:.3rem;right:.5rem;">view_timeline</span>Yearly</a></li>
+                           
+                            <li><a href="{% url 'booking_reports' %}" class="d-block text-center" style="font-size:clamp(.1rem,1rem,1.5rem);"><span class="material-symbols-outlined" style="position: relative;top:.3rem;right:.5rem;">assignment</span>Reports</a></li>
+                        </ul>
+                    </div>
+                </div>
+    
+                <div class="col-12 col-md-10 mt-2">
+                    <div id="reports" class="bg-white p-3 rounded my-3 d-flex align-items-center" style="width: 100%;">
+                        <div class="row w-100">
+                            <div class="col-12">
+                                <div class="boxes d-flex flex-wrap gap-3">
+                                    
+                                    <div class="box border p-3 text-center flex-fill" style="position: relative;">
+                                        <div id="piechart_3d"></div>
+                                    </div>
+
+                                    <div class="box border p-5 text-center flex-fill" style="position: relative;">
+                                        <div class="total_booking">
+                                            <span class="material-symbols-outlined icon" style="position: absolute; top: 10px; right: 10px;">bookmark_add</span>
+                                            <h1 style="font-size:5.5rem;margin-top:2rem;" id="booking-count">{{ total_bookings }}</h1>
+                                            <h6 style="font-size:clamp(.2rem, .8rem, 3rem);margin-bottom:1.5rem;">Total Bookings in {{current_month_display}}</h6>
+                                            <button id="currentday_button" data-bs-toggle="modal" data-bs-target="#view_current_day">Current Day</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+    
+                            <div class="col-12 mt-3">
+                                <div class="sdf p-2 border rounded">
+                                    <div id="barchart"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+
+
+
+
+{% comment %} modals {% endcomment %}
+
+<div class="modal fade" id="view_current_day" tabindex="-1" aria-labelledby="view_current_day" aria-hidden="true">
+    <div class="modal-dialog" style="max-width:70%">
+      <form action="" method="post">
+        {% csrf_token %}
+   
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5"></h1>
+
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="id" value="view_current_day">
+  
+          <div class="container">
+            
+
+         
+            <table class="table table-bordered table-hover table-striped tables">
+                <tr>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Category</th>
+                    <th>Event Name</th>
+                </tr>
+                {% for list in bookings %}
+                <tr>
+                 
+                    <td>{{ list.start_time }}</td>
+                    <td>{{ list.end_time }}</td>
+                    <td>{{ list.date_start }}</td>
+                    <td>{{ list.date_end }}</td>
+                    <td>{{ list.category }}</td>
+                    <td>{{ list.name }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+          
+          
+        </div>
+        
+
+      
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+       
+        </div>
+      </div>
+    </form>
+    </div>
+  </div>
+
+
+
+{% comment %} 
+    <script type="text/javascript">
+        google.charts.load("current", {packages:["corechart"]});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable({{ chart_data|safe }});
+
+          var options = {
+            title: 'Booking Categories',
+            is3D: true,
+            width:750,
+            height:280,
+            animation: {
+              duration: 1000,
+              easing: 'out',
+              startup:true
+            },
+            colors: {{ colors|safe }}
+          };
+
+          var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+          chart.draw(data, options);
+        }
+    </script>
+
+       {% endcomment %}
+
+
+
+
+    <script type="text/javascript">
+        google.charts.load("current", {packages:["corechart"]});
+        google.charts.setOnLoadCallback(drawPieChart);
+        google.charts.setOnLoadCallback(drawColumnChart);
+
+   
+
+        function drawPieChart() {
+            var data = google.visualization.arrayToDataTable({{ chart_data_current_month|safe }});
+
+            var options = {
+                title: 'Booking Categories for Current Month',
+                is3D: true,
+                width: 900,
+                height: 280,
+                colors: {{ colors|safe }}
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+            chart.draw(data, options);
+        }
+
+        function drawColumnChart() {
+            var data = google.visualization.arrayToDataTable({{ chart_data_monthly|safe }});
+
+            var options = {
+                width: 1210,
+                height: 295,
+                legend: { position: 'top', maxLines: 3 },
+                bar: { groupWidth: '75%' },
+                isStacked: true,
+                animation: {
+                    duration: 1000,
+                    easing: 'inAndOut',
+                    startup: true
+                },
+                colors: [
+                    'green',        // Function Hall
+                    'red',          // Pavilion
+                    'purple',       // Hostel
+                    '#F7850B',      // Basketball Court
+                    '#CCA103',      // Cabana
+                    'brown',        // Camp Site
+                    '#406F70',      // Big Pool
+                    'blue'          // Kidney Pool
+                ]
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('barchart'));
+            chart.draw(data, options);
+        }
+    </script>
+
+
+
+  
+
+
+    <script>
+
+        const bookingCountElement = document.getElementById('booking-count');
+        const targetNumber = parseInt(bookingCountElement.textContent, 10); // Extract the number
+        
+        function animateNumber(start = 0, end = targetNumber, duration = 2600) {
+          let step = Math.ceil(Math.abs(end - start) / (duration / 16)); // Calculate step size (16 milliseconds per frame)
+          let currentNumber = start;
+        
+          const timer = setInterval(() => {
+            currentNumber += Math.min(step, Math.abs(end - currentNumber)); // Ensure smooth transition at the end
+        
+            bookingCountElement.textContent = currentNumber;
+        
+            if (currentNumber >= end) {
+              clearInterval(timer);
+            }
+          }, 16); // Update every 16 milliseconds for smooth animation
+        }
+        
+        animateNumber(0, targetNumber); // Start the animation
+        
+    </script>
+
+
+{% endblock content %}

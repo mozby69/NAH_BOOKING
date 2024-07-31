@@ -1,0 +1,245 @@
+
+
+{% extends "nah_template/base.html" %} 
+{% load static %}
+{% block content %}
+
+<style>
+.login-content {
+    min-width: 100%;
+    display: flex;
+    align-items: center;
+    height: 100vh;
+}
+.login-display {
+    display: flex;
+  background-color: #31816E;
+    width: 45%;
+    height: 100vh;
+    opacity: 88%;
+    flex-direction: column;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+   width: 55%;
+   height: 100vh;
+}
+.login-logo img {
+    width: 19rem;
+   
+}
+.login-header img {
+    width: 45%;
+   
+}
+.login-header {
+    display: flex;
+    justify-content: center;
+}
+.login-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.login-form h2 {
+    text-align: center;
+    font-family: Jomolhari;
+    font-size: 1.3em;
+    color: #9C9C9C;
+}
+.login-form button {
+    font-size: 1.3em;
+    color: white;
+    background-color: #87B889;
+    font-weight: bold;
+    width: 109%;
+}
+
+.login-form form {
+    width: 45%;
+}
+.login-form p {
+    text-align: center;
+    font-family: Jomolhari;
+    font-size: 0.9em;
+    color: #9C9C9C;
+}
+.login-form label{
+    margin-bottom:15px;
+    position:relative;
+    border-bottom:1px solid #ddd;
+    width: 110%;
+}
+.login-form input{
+    width:100%;
+    padding:10px 0px;
+    margin-top:20px;
+    border:none;
+    outline:none;
+}
+.login-form input::placeholder{
+    opacity:0;
+}
+.login-form span{
+    position:absolute;
+    top:0;
+    left:0;
+    transform: translateY(30px);
+    font-size: 1.1em;
+    transition-duration: 300ms;
+    color: #9c9c9c;
+}
+
+.login-form label:focus-within > span,
+input:not(:placeholder-shown) + span{
+    color:#87b889;
+    transform:translateY(0px);
+}
+.login-logo2 img, .login-logo4 img{
+    width: 12rem;
+}
+.login-logo2 , .login-logo4 {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 50px;
+}
+.login-logo2 , .login-logo4 {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 50px;
+}
+.login-logo3 img {
+    width: 13rem;
+}
+.login-logo3 {
+    display: flex;
+    justify-content: center;
+}
+.login-logo {
+    display: flex;
+    justify-content: center;
+    padding-top: 5rem;
+}
+.login-logo2 #naza{
+    width: 15rem;
+}
+button#login-btn:hover {
+    color: white;
+    background-color: #85c440;
+}
+/* Media query for screens larger than 768px (e.g., tablets and up) */
+@media (max-width:1028px) {
+    .login-display{
+        display: none;
+    }
+    .login-container{
+        width: 100%;
+    }
+
+}
+
+   </style>
+    <div class="login-content">
+        <div class="login-display">
+            <div class="login-logo">
+                <img src="{% static 'images/jgc.png' %}" alt="Naza Logo">
+            </div>
+            <div class="login-logo2">
+                <img id="naza" src="{% static 'images/naza.png' %}" alt="Naza Logo">
+                <img src="{% static 'images/elc.png' %}" alt="Naza Logo">
+            </div>
+            <div class="login-logo3">
+                <img src="{% static 'images/emb.png' %}" alt="Naza Logo">
+            </div>
+            <div class="login-logo4">
+                <img src="{% static 'images/rlc.png' %}" alt="Naza Logo">
+                <img src="{% static 'images/fch.png' %}" alt="Naza Logo">
+            </div>
+        </div>
+        <div class="login-container">
+            <div class="login-header">
+                <img src="{% static 'images/naza.png' %}" alt="Naza Logo">
+            </div>
+            <div class="login-form">
+                <h2>WELCOME TO <br>NAZARETH ACTIVITY HUB </h2>
+                <br>
+                <br>
+                <form action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="{{ form.username.id_for_label }}">
+                            {{ form.username }}
+                            <span>Username</span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.password.id_for_label }}">
+                            {{ form.password }}
+                            <span>Password</span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" id="login-btn" class="btn btn-login btn-block">Login</button>
+                    </div>
+                    <p>NAH SCHEDULING SYSTEM © 2024</p>
+                </form>
+                <hr>
+                <!-- <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#registerModal">
+                    Register
+                </button> -->
+            </div>
+      </div>
+</div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            const csrftoken = getCookie('csrftoken');
+    
+            $('#registerForm').on('submit', function(event) {
+                event.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    headers: {'X-CSRFToken': csrftoken},
+                    success: function(response) {
+                        if (response.success) {
+                            $('#registerModal').modal('hide');
+                            alert('Registration successful!');
+                            window.location.href = '{% url "index" %}';
+                        } else {
+                            alert('Registration failed. Please check the form for errors.');
+                            // Optionally display the errors
+                            console.log(response.errors);
+                        }
+                    },
+                    error: function(response) {
+                        alert('Registration failed. Please try again.');
+                    }
+                });
+            });
+        });
+    </script>
+    
+
+{% endblock %}

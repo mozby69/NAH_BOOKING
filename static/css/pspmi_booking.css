@@ -1,0 +1,91 @@
+*{
+    padding:0;
+    margin:0;
+    box-sizing: border-box;
+}
+
+#calendar{
+    width:100%;
+    height:88vh;
+    background-color: white;
+    padding:1.5rem;
+    border-radius: 1rem;
+    color:black;
+    margin-top:1.5rem;
+}
+
+
+.main-container{
+  
+    background-color: #a4c9a6;
+    height:100vh;
+    width:100%;
+  
+}
+.container{
+    max-width: 100%;
+
+    height:90%;
+}
+.title{
+    font-family: "Raleway", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 687;
+    font-style: normal;
+    margin-top:4rem;
+}
+.title h2{
+    color:white;
+    text-align: center;
+
+}
+.navs{
+    margin-top: 6rem;
+    display: flex;
+    gap:.5rem;
+    align-items: center;
+    justify-content: center;
+
+}
+.navs ul{
+    list-style-type: none;
+
+}
+.navs ul a{
+    text-decoration: none;
+
+    color:white;
+
+}
+
+.navs ul li {
+    background-color: #5EA061;
+    padding: .5rem 2rem;
+    margin-bottom: .5rem;
+    border-radius: 1rem;
+    display: flex; /* Make the li element a flex container */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    line-height: 1.8;
+  
+}
+.navs ul li:hover{
+    background-color: white;
+    color:#5EA061 !important;
+}
+.navs ul li a:hover{
+    color:#5EA061;
+}
+
+/*  
+    font-family: "Raleway", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: <weight>;
+    font-style: normal;
+   */
+
+   .fc-event-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
