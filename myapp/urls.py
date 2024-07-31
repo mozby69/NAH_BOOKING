@@ -30,5 +30,6 @@ urlpatterns = [
     path('notify_booking/', pspmi_booking.notify_booking, name="notify_booking"),
     path('booking_reports/', pspmi_booking.booking_reports, name="booking_reports"),
     path('pspmi_print_page/', pspmi_booking.pspmi_print_page, name="pspmi_print_page"),
+    path('print_monthly/', pspmi_booking.print_monthly, name="print_monthly"),
 
 ]

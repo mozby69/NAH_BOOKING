@@ -351,3 +351,9 @@ def pspmi_print_page(request):
 
 
 
+
+def print_monthly(request):
+    return render(request, "nah_template/print_monthly.html")
+
+
+
